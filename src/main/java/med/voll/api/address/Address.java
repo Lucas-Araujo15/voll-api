@@ -16,5 +16,15 @@ public class Address {
     private String number;
     private String complement;
     private String city;
-    private String UF;
+    private String uf;
+
+    public Address(AddressData address) {
+        this.street = address.street();
+        this.neighborhood = address.neighborhood();
+        this.uf = address.uf();
+        this.city = address.city();
+        this.zipCode = address.zipCode();
+        this.number = address.number();
+        this.complement = address.complement();
+    }
 }
