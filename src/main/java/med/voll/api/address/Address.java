@@ -12,7 +12,7 @@ import lombok.NoArgsConstructor;
 public class Address {
     private String street;
     private String neighborhood;
-    private String zipCode;
+    private String zipcode;
     private String number;
     private String complement;
     private String city;
@@ -23,7 +23,7 @@ public class Address {
         this.neighborhood = address.neighborhood();
         this.uf = address.uf();
         this.city = address.city();
-        this.zipCode = address.zipCode();
+        this.zipcode = address.zipcode();
         this.number = address.number();
         this.complement = address.complement();
     }
