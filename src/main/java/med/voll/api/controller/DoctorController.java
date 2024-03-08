@@ -32,7 +32,8 @@ public class DoctorController {
 
     @PutMapping
     @Transactional
-    public ResponseEntity<DoctorListData> update(@RequestBody @Valid DoctorUpdateData data) {
-        return null;
+    public void update(@RequestBody @Valid DoctorUpdateData data) {
+        Doctor doctor = doctorRepository.getReferenceById(data.id());
+        doctor.updateInformation(data);
     }
 }
