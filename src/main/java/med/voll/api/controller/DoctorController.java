@@ -2,10 +2,7 @@ package med.voll.api.controller;
 
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
-import med.voll.api.doctor.Doctor;
-import med.voll.api.doctor.DoctorListData;
-import med.voll.api.doctor.DoctorRegisterData;
-import med.voll.api.doctor.DoctorRepository;
+import med.voll.api.doctor.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -31,5 +28,11 @@ public class DoctorController {
     @GetMapping
     public ResponseEntity<Page<DoctorListData>> list(@PageableDefault(size = 10, page = 0, sort = "name", direction = Sort.Direction.ASC) Pageable pagination) {
         return ResponseEntity.ok(doctorRepository.findAll(pagination).map(DoctorListData::new));
+    }
+
+    @PutMapping
+    @Transactional
+    public ResponseEntity<DoctorListData> update(@RequestBody @Valid DoctorUpdateData data) {
+        return null;
     }
 }
