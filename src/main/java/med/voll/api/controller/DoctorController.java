@@ -9,6 +9,8 @@ import med.voll.api.doctor.DoctorRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -27,7 +29,7 @@ public class DoctorController {
     }
 
     @GetMapping
-    public ResponseEntity<Page<DoctorListData>> list(Pageable pagination) {
+    public ResponseEntity<Page<DoctorListData>> list(@PageableDefault(size = 10, page = 0, sort = "name", direction = Sort.Direction.ASC) Pageable pagination) {
         return ResponseEntity.ok(doctorRepository.findAll(pagination).map(DoctorListData::new));
     }
 }
