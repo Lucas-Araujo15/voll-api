@@ -27,7 +27,7 @@ public class DoctorController {
 
     @GetMapping
     public ResponseEntity<Page<DoctorListData>> list(@PageableDefault(size = 10, page = 0, sort = "name", direction = Sort.Direction.ASC) Pageable pagination) {
-        return ResponseEntity.ok(doctorRepository.findAll(pagination).map(DoctorListData::new));
+        return ResponseEntity.ok(doctorRepository.findAllByActiveTrue(pagination).map(DoctorListData::new));
     }
 
     @PutMapping
@@ -40,6 +40,7 @@ public class DoctorController {
     @DeleteMapping("/{id}")
     @Transactional
     public void delete(@PathVariable Long id) {
-        doctorRepository.deleteById(id);
+        Doctor doctor = doctorRepository.getReferenceById(id);
+        doctor.delete();
     }
 }
