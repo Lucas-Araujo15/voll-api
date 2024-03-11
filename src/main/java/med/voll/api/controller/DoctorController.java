@@ -3,7 +3,7 @@ package med.voll.api.controller;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
-import med.voll.api.doctor.*;
+import med.voll.api.domain.doctor.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.net.URI;
-import java.util.List;
 
 @RestController
 @RequestMapping("/doctor")
@@ -42,12 +41,8 @@ public class DoctorController {
 
     @GetMapping("/{id}")
     public ResponseEntity<DetailedDoctorData> detail(@PathVariable("id") Long id) {
-        try {
-            Doctor doctor = doctorRepository.getReferenceById(id);
-            return ResponseEntity.ok(new DetailedDoctorData(doctor));
-        } catch (EntityNotFoundException error) {
-            return ResponseEntity.notFound().build();
-        }
+        Doctor doctor = doctorRepository.getReferenceById(id);
+        return ResponseEntity.ok(new DetailedDoctorData(doctor));
     }
 
     @PutMapping
