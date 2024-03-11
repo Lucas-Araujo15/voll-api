@@ -10,7 +10,9 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.util.UriComponentsBuilder;
 
+import java.net.URI;
 import java.util.List;
 
 @RestController
@@ -21,8 +23,14 @@ public class DoctorController {
 
     @PostMapping
     @Transactional
-    public ResponseEntity create(@RequestBody @Valid DoctorRegisterData data) {
-        doctorRepository.save(new Doctor(data);
+    public ResponseEntity<?> create(@RequestBody @Valid DoctorRegisterData data, UriComponentsBuilder uriBuilder) {
+        Doctor doctor = new Doctor(data);
+
+        doctorRepository.save(doctor);
+
+        URI uri = uriBuilder.path("/doctors/{id}").buildAndExpand(doctor.getId()).toUri();
+
+        return ResponseEntity.created(uri).body(new DetailedDoctorData(doctor));
     }
 
     @GetMapping
@@ -42,7 +50,7 @@ public class DoctorController {
 
     @DeleteMapping("/{id}")
     @Transactional
-    public ResponseEntity delete(@PathVariable Long id) {
+    public ResponseEntity<?> delete(@PathVariable Long id) {
         Doctor doctor = doctorRepository.getReferenceById(id);
         doctor.delete();
 
