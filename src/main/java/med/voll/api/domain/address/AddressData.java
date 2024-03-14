@@ -4,7 +4,7 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 
 public record AddressData(
-        @NotBlank
+        @NotBlank(message = "{address.street}")
         String street,
 
         @NotBlank
