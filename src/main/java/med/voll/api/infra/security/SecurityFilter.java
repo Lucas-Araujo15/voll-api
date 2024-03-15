@@ -37,6 +37,8 @@ public class SecurityFilter extends OncePerRequestFilter {
             SecurityContextHolder.getContext().setAuthentication(authentication);
         }
 
+        System.out.println("Token não existe");
+
         filterChain.doFilter(request, response);
     }
 
