@@ -34,6 +34,14 @@ public class AppointmentScheduling {
     }
 
     private Doctor chooseDoctor(AppointmentSchedulingData data) {
+        if (data.doctorId() != null) {
+            return doctorRepository.getReferenceById(data.doctorId());
+        }
 
+        if (data.specialty() == null) {
+            throw new ValidationException("Especialidade é obrigatória quando o médico não for escolhido");
+        }
+
+        return doctorRepository.chooseRandomDoctorFreeOnDate(data.specialty(), data.date());
     }
 }
