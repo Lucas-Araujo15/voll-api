@@ -28,7 +28,7 @@ public class DoctorController {
 
         doctorRepository.save(doctor);
 
-        URI uri = uriBuilder.path("/doctors/{id}").buildAndExpand(doctor.getId()).toUri();
+        URI uri = uriBuilder.path("/doctor/{id}").buildAndExpand(doctor.getId()).toUri();
 
         return ResponseEntity.created(uri).body(new DetailedDoctorData(doctor));
     }
