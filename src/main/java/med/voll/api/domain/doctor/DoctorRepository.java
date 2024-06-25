@@ -11,14 +11,14 @@ public interface DoctorRepository extends JpaRepository<Doctor, Long> {
     Page<Doctor> findAllByActiveTrue(Pageable pagination);
 
     @Query("""
-            select d from doctors d
+            select d from Doctor d
             where
             d.active = true
             and
-            m.specialty = :specialty
+            d.specialty = :specialty
             and
-            m.id not in (
-                select a.doctor_id from appointments a
+            d.id not in (
+                select a.doctor.id from Appointment a
                 where
                 a.date = :date
             )
@@ -29,8 +29,8 @@ public interface DoctorRepository extends JpaRepository<Doctor, Long> {
 
     @Query("""
             select d.active
-            from doctors d
+            from Doctor d
             where d.id = :id
             """)
-    Boolean findActiveById(Long doctorId);
+    boolean findActiveById(Long id);
 }

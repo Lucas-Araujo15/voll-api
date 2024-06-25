@@ -16,7 +16,7 @@ public class ValidatorActiveDoctor implements ValidatorAppointmentScheduling {
             return;
         }
 
-        Boolean isDoctorActive = doctorRepository.findActiveById(data.doctorId());
+        boolean isDoctorActive = doctorRepository.findActiveById(data.doctorId());
 
         if (!isDoctorActive) {
             throw new ValidationException("Consulta não pode ser agendada com médico");

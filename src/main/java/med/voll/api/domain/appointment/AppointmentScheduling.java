@@ -23,7 +23,7 @@ public class AppointmentScheduling {
     @Autowired
     private List<ValidatorAppointmentScheduling> validators;
 
-    public void schedule(AppointmentSchedulingData data) {
+    public DetailedAppointmentData schedule(AppointmentSchedulingData data) {
         if (data.doctorId() != null && !doctorRepository.existsById(data.doctorId())) {
             throw new ValidationException("ID do médico informado não existe");
         }
@@ -35,10 +35,17 @@ public class AppointmentScheduling {
         validators.forEach(validator -> validator.validate(data));
 
         Doctor doctor = chooseDoctor(data);
+
+        if (doctor == null) {
+            throw new ValidationException("Não existe médico disponível para essa data");
+        }
+
         Patient patient = patientRepository.findById(data.patientId()).get();
 
         Appointment appointment = new Appointment(null, doctor, patient, data.date());
         appointmentRepository.save(appointment);
+
+        return new DetailedAppointmentData(appointment);
     }
 
     private Doctor chooseDoctor(AppointmentSchedulingData data) {
