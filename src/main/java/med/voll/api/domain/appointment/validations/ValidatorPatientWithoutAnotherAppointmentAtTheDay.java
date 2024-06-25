@@ -1,0 +1,25 @@
+package med.voll.api.domain.appointment.validations;
+
+import med.voll.api.domain.ValidationException;
+import med.voll.api.domain.appointment.AppointmentRepository;
+import med.voll.api.domain.appointment.AppointmentSchedulingData;
+
+import java.time.LocalDateTime;
+
+public class ValidatorPatientWithoutAnotherAppointmentAtTheDay {
+    private AppointmentRepository appointmentRepository;
+
+    public void validate(AppointmentSchedulingData data) {
+        int firstAvailableTime = 7;
+        int lastAvailableTime = 18;
+
+        LocalDateTime firstHour = data.date().withHour(firstAvailableTime);
+        LocalDateTime lastHour = data.date().withHour(lastAvailableTime);
+
+        boolean patientHasAnotherAppointmentAtTheDay = appointmentRepository.existsByPatientIdAndDateBetween(data.patientId(), firstHour, lastHour);
+
+        if (patientHasAnotherAppointmentAtTheDay) {
+            throw new ValidationException("Paciente já possui uma consulta agendada nesse dia");
+        }
+    }
+}
