@@ -3,10 +3,14 @@ package med.voll.api.domain.appointment.validations;
 import med.voll.api.domain.ValidationException;
 import med.voll.api.domain.appointment.AppointmentRepository;
 import med.voll.api.domain.appointment.AppointmentSchedulingData;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
 
-public class ValidatorPatientWithoutAnotherAppointmentAtTheDay {
+@Component
+public class ValidatorPatientWithoutAnotherAppointmentAtTheDay implements ValidatorAppointmentScheduling {
+    @Autowired
     private AppointmentRepository appointmentRepository;
 
     public void validate(AppointmentSchedulingData data) {
