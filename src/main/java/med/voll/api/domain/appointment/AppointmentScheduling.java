@@ -1,7 +1,8 @@
 package med.voll.api.domain.appointment;
 
 import med.voll.api.domain.ValidationException;
-import med.voll.api.domain.appointment.validations.ValidatorAppointmentScheduling;
+import med.voll.api.domain.appointment.validations.cancellation.ValidatorAppointmentCancellation;
+import med.voll.api.domain.appointment.validations.scheduling.ValidatorAppointmentScheduling;
 import med.voll.api.domain.doctor.Doctor;
 import med.voll.api.domain.doctor.DoctorRepository;
 import med.voll.api.domain.patient.Patient;
@@ -23,6 +24,9 @@ public class AppointmentScheduling {
     @Autowired
     private List<ValidatorAppointmentScheduling> validators;
 
+    @Autowired
+    private List<ValidatorAppointmentCancellation> validatorsCancellation;
+
     public DetailedAppointmentData schedule(AppointmentSchedulingData data) {
         if (data.doctorId() != null && !doctorRepository.existsById(data.doctorId())) {
             throw new ValidationException("ID do médico informado não existe");
@@ -42,10 +46,22 @@ public class AppointmentScheduling {
 
         Patient patient = patientRepository.findById(data.patientId()).get();
 
-        Appointment appointment = new Appointment(null, doctor, patient, data.date());
+        Appointment appointment = new Appointment(doctor, patient, data.date());
         appointmentRepository.save(appointment);
 
         return new DetailedAppointmentData(appointment);
+    }
+
+    public void cancel(AppointmentCancellationData data) {
+        if (!appointmentRepository.existsById(data.appointmentId())) {
+            throw new ValidationException("Id da consulta informado não existe!");
+        }
+
+        validatorsCancellation.forEach(validator -> validator.validate(data));
+
+        Appointment appointment = appointmentRepository.getReferenceById(data.appointmentId());
+
+        appointment.cancel(data.reason());
     }
 
     private Doctor chooseDoctor(AppointmentSchedulingData data) {

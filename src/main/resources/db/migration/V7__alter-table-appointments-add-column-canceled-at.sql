@@ -1,0 +1,1 @@
+alter table appointments add canceled_at datetime;

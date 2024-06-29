@@ -30,4 +30,21 @@ public class Appointment {
     private Patient patient;
 
     private LocalDateTime date;
+
+    @Column(name = "canceled_at")
+    private LocalDateTime canceledAt;
+
+    @Column(name = "reason_for_cancellation")
+    private String reasonForCancellation;
+
+    public Appointment(Doctor doctor, Patient patient, LocalDateTime date) {
+        this.doctor = doctor;
+        this.patient = patient;
+        this.date = date;
+    }
+
+    public void cancel(String reason) {
+        this.canceledAt = LocalDateTime.now();
+        this.reasonForCancellation = reason;
+    }
 }
