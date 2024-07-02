@@ -62,6 +62,8 @@ public class AppointmentScheduling {
         Appointment appointment = appointmentRepository.getReferenceById(data.appointmentId());
 
         appointment.cancel(data.reason());
+
+        appointmentRepository.save(appointment);
     }
 
     private Doctor chooseDoctor(AppointmentSchedulingData data) {

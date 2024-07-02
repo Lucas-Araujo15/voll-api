@@ -20,7 +20,7 @@ public class ValidatorPatientWithoutAnotherAppointmentAtTheDay implements Valida
         LocalDateTime firstHour = data.date().withHour(firstAvailableTime);
         LocalDateTime lastHour = data.date().withHour(lastAvailableTime);
 
-        boolean patientHasAnotherAppointmentAtTheDay = appointmentRepository.existsByPatientIdAndDateBetween(data.patientId(), firstHour, lastHour);
+        boolean patientHasAnotherAppointmentAtTheDay = appointmentRepository.existsByPatientIdAndCanceledAtIsNullAndDateBetween(data.patientId(), firstHour, lastHour);
 
         if (patientHasAnotherAppointmentAtTheDay) {
             throw new ValidationException("Paciente já possui uma consulta agendada nesse dia");

@@ -12,7 +12,7 @@ public class ValidatorDoctorWithAnotherAppointmentAtTheSameTime implements Valid
     private AppointmentRepository appointmentRepository;
 
     public void validate (AppointmentSchedulingData data) {
-        boolean doctorHasAnotherAppointmentAtTheSameTime = appointmentRepository.existsByDoctorIdAndDate(data.doctorId(), data.date());
+        boolean doctorHasAnotherAppointmentAtTheSameTime = appointmentRepository.existsByDoctorIdAndDateAndCanceledAtIsNull(data.doctorId(), data.date());
 
         if (doctorHasAnotherAppointmentAtTheSameTime) {
             throw new ValidationException("Médico já possui outra consulta agendada nesse mesmo horário");
